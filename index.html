@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MathJax AsciiMath Test Page</title>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_HTMLorMML-full"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.js"></script>
+</head>
+<body>
+
+<div id="AddDiv" class="arithmetic">
+`38 xx 2 + 3 = 79`
+</div>
+
+<div id="AddDiv" class="arithmetic">
+`18 + 11 = 29`
+</div>
+
+<script type="text/javascript">
+hub = MathJax.Hub;
+hub.Queue(
+    function() {
+        // Find all arithmetic statements
+        arithmethicDivs = d3.selectAll("div.arithmetic");
+        arithmethicDivs.each(function () {
+            d3.select(this).append("div").attr("class", "arithMeticSVG");
+            var arithMeticSVG = d3.select(this).select(".arithMeticSVG");
+            numbers = d3.select(this).selectAll("mn");
+            numbers.each(function () {
+                // number = d3.select(this);
+                var number = this.innerHTML;
+
+                var svgWidth = 250;
+                var svgHeight = 250;
+
+                var svgArea = svgWidth * svgHeight;
+
+                // Calculate the largest area a circle can have while still
+                // fitting them all in the box
+                var circleMaxArea = Math.sqrt(svgArea / number);
+
+                var circleRadius = circleMaxArea / 6;
+                var circleSize = circleRadius * 3;
+
+                console.log(circleMaxArea);
+
+                arithMeticSVG
+                    .append("svg")
+                    .attr("width", svgWidth)
+                    .attr("height", svgHeight)
+                    .call(function(svg) {
+                        xPosition = circleSize;
+                        yPosition = circleSize;
+                        yLimit = svgHeight - circleSize;
+                        for(i = 0; i < number; i++) {
+                            this.append("circle")
+                                .attr({
+                                    "cx": xPosition,
+                                    "cy": yPosition,
+                                    "r": circleRadius,
+                                    "stroke": "green",
+                                    "stroke-width": "1",
+                                    "fill": "green"
+                                })
+                            if(yPosition + circleRadius < yLimit) {
+                                xPosition = xPosition + 0;
+                                yPosition = yPosition + circleSize;
+                            } else {
+                                yPosition = circleSize;
+                                xPosition = xPosition + circleSize;
+                            }
+                        }
+                    });
+            });
+
+        });
+        // addJax = hub.getAllJax("AddDiv");
+        // addJax.forEach(function (jax) {
+        //     console.log(jax);
+        // });
+    }
+);
+
+</script>
+
+</body>
+</html>
