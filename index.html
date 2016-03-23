@@ -9,12 +9,16 @@
 </head>
 <body>
 
-<div id="AddDiv" class="arithmetic">
+<div class="arithmetic">
 `38 xx 2 + 3 = 79`
 </div>
-
-<div id="AddDiv" class="arithmetic">
+<hr/>
+<div class="arithmetic">
 `18 + 11 = 29`
+</div>
+<hr/>
+<div class="arithmetic">
+`3 + 11 = 14`
 </div>
 
 <script type="text/javascript">
@@ -42,8 +46,6 @@ hub.Queue(
 
                 var circleRadius = circleMaxArea / 6;
                 var circleSize = circleRadius * 3;
-
-                console.log(circleMaxArea);
 
                 arithMeticSVG
                     .append("svg")
@@ -75,10 +77,6 @@ hub.Queue(
             });
 
         });
-        // addJax = hub.getAllJax("AddDiv");
-        // addJax.forEach(function (jax) {
-        //     console.log(jax);
-        // });
     }
 );
 
