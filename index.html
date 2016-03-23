@@ -28,54 +28,79 @@ hub.Queue(
         // Find all arithmetic statements
         arithmethicDivs = d3.selectAll("div.arithmetic");
         arithmethicDivs.each(function () {
-            d3.select(this).append("div").attr("class", "arithMeticSVG");
-            var arithMeticSVG = d3.select(this).select(".arithMeticSVG");
-            numbers = d3.select(this).selectAll("mn");
-            numbers.each(function () {
-                // number = d3.select(this);
-                var number = this.innerHTML;
+            d3.select(this).append("div").attr("class", "arithmeticSVG");
+            var arithmeticSVG = d3.select(this).select(".arithmeticSVG");
 
-                var svgWidth = 250;
-                var svgHeight = 250;
+            // Locate the parent node of the raw arithmetic jax
+            var arithmeticStatementNode = d3.select(d3.select(this).select("mn")[0][0].parentNode);
 
-                var svgArea = svgWidth * svgHeight;
+            // Get the elements of the arithmetic as a D3 selection
+            var arithmeticStatement = d3.selectAll(arithmeticStatementNode[0][0].childNodes);
 
-                // Calculate the largest area a circle can have while still
-                // fitting them all in the box
-                var circleMaxArea = Math.sqrt(svgArea / number);
+            // Loop them and visualize
+            arithmeticStatement.each(function () {
+                var nodeName = this.nodeName;
+                if (nodeName === "mn" ) {
+                    var number = this.innerHTML;
 
-                var circleRadius = circleMaxArea / 6;
-                var circleSize = circleRadius * 3;
+                    var svgWidth = 250;
+                    var svgHeight = 250;
 
-                arithMeticSVG
-                    .append("svg")
-                    .attr("width", svgWidth)
-                    .attr("height", svgHeight)
-                    .call(function(svg) {
-                        xPosition = circleSize;
-                        yPosition = circleSize;
-                        yLimit = svgHeight - circleSize;
-                        for(i = 0; i < number; i++) {
-                            this.append("circle")
-                                .attr({
-                                    "cx": xPosition,
-                                    "cy": yPosition,
-                                    "r": circleRadius,
-                                    "stroke": "green",
-                                    "stroke-width": "1",
-                                    "fill": "green"
-                                })
-                            if(yPosition + circleRadius < yLimit) {
-                                xPosition = xPosition + 0;
-                                yPosition = yPosition + circleSize;
-                            } else {
-                                yPosition = circleSize;
-                                xPosition = xPosition + circleSize;
+                    var svgArea = svgWidth * svgHeight;
+
+                    // Calculate the largest area a circle can have while still
+                    // fitting them all in the box
+                    var circleMaxArea = Math.sqrt(svgArea / number);
+
+                    var circleRadius = circleMaxArea / 6;
+                    var circleSize = circleRadius * 3;
+
+                    arithmeticSVG
+                        .append("svg")
+                        .attr("width", svgWidth)
+                        .attr("height", svgHeight)
+                        .call(function(svg) {
+                            xPosition = circleSize;
+                            yPosition = circleSize;
+                            yLimit = svgHeight - circleSize;
+                            for(i = 0; i < number; i++) {
+                                this.append("circle")
+                                    .attr({
+                                        "cx": xPosition,
+                                        "cy": yPosition,
+                                        "r": circleRadius,
+                                        "stroke": "green",
+                                        "stroke-width": "1",
+                                        "fill": "green"
+                                    })
+                                if(yPosition + circleRadius < yLimit) {
+                                    xPosition = xPosition + 0;
+                                    yPosition = yPosition + circleSize;
+                                } else {
+                                    yPosition = circleSize;
+                                    xPosition = xPosition + circleSize;
+                                }
                             }
-                        }
-                    });
+                        });
+                } else if (nodeName === "mo") {
+                    console.log("mo");
+                    console.log(this.innerHTML);
+                    var svgWidth = 50;
+                    var svgHeight = 250;
+                    arithmeticSVG
+                        .append("svg")
+                        .attr("height", svgHeight)
+                        .attr("width", svgWidth)
+                        .append("text")
+                        .attr({
+                            "x": svgWidth / 2,
+                            "y": svgHeight / 2,
+                            "fill": "black",
+                            "font-size": "20px"
+                        })
+                        .text(this.innerHTML);
+                }
             });
-
         });
     }
 );
