@@ -93,10 +93,10 @@ hub.Queue(
                         .attr("width", svgWidth)
                         .append("text")
                         .attr({
-                            "x": svgWidth / 2,
+                            "x": 0,
                             "y": svgHeight / 2,
                             "fill": "black",
-                            "font-size": "20px"
+                            "font-size": svgWidth
                         })
                         .text(this.innerHTML);
                 }
